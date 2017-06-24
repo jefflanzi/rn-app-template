@@ -1,5 +1,6 @@
 import { StackNavigator } from 'react-navigation';
 import * as screens from './screens';
+import { colors } from './components/styles';
 
 const Main = StackNavigator(
   {
@@ -9,6 +10,14 @@ const Main = StackNavigator(
   },
   {
     initialRouteName: 'Login',
+    navigationOptions: {
+      headerMode: 'screen',
+      gesturesEnabled: false,
+      headerTintColor: colors.primary.text,
+      headerStyle: {
+        backgroundColor: colors.primary.base,
+      },
+    },
   },
 );
 

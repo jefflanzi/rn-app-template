@@ -6,6 +6,11 @@ import { PageContainer } from '../components';
 
 // Class
 class Home extends Component {
+  static navigationOptions = {
+    title: 'Home',
+    // header: null,
+  };
+
   render() {
     return (
       <PageContainer>
