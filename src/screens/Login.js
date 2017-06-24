@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
 // Components
-import { Text } from 'react-native';
-import { PageContainer } from '../components';
+import { Button, PageContainer, Text } from '../components';
 
 // Main Class
 class Login extends Component {
@@ -10,6 +9,8 @@ class Login extends Component {
     return (
       <PageContainer>
         <Text>Login</Text>
+        <Button title="login" />
+        <Button title="register" />
       </PageContainer>
     );
   }

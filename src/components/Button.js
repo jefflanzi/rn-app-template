@@ -22,7 +22,11 @@ const defaultProps = {
 export default function Button(props) {
   const { title, onPress, buttonStyle, textStyles, disabled } = props;
   return (
-    <TouchableOpacity onPress={onPress} disabled={disabled}>
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      style={styles.container}
+    >
       <View
         style={[styles.button, buttonStyle, disabled && styles.buttonDisabled]}
       >
@@ -39,13 +43,17 @@ Button.propTypes = propTypes;
 Button.defaultProps = defaultProps;
 
 const styles = StyleSheet.create({
+  container: {
+    alignSelf: 'stretch',
+    marginVertical: 5,
+  },
   text: {
     textAlign: 'center',
-    color: 'white',
+    color: colors.primary.text,
     backgroundColor: 'transparent',
   },
   button: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primary.base,
     opacity: 1.0,
     height: 44,
     borderRadius: 44 / 2,

@@ -1,6 +1,27 @@
+// https://material.io/color/#!/?view.left=0&view.right=0&primary.color=3F51B5&secondary.color=8BC34A
+// https://www.materialpalette.com/indigo/light-green
+
 export const colors = {
-  primary: '#CA1B28',
-  secondary: '#2c2c2c',
+  primary: {
+    base: '#3F51B5',
+    light: '#C5CAE9',
+    dark: '#303F9F',
+    text: '#FFFFFF',
+  },
+  secondary: {
+    base: '#8bc34a',
+    light: '#bef67a',
+    dark: '#5a9216',
+    text: '#FFFFFF',
+  },
+  content: {
+    background: '#DADBDA',
+    text: '#212121',
+  },
+  container: {
+    background: '#DADBDA',
+    border: 'BDBDBD',
+  },
 };
 
 export const fonts = {
@@ -14,6 +35,6 @@ export const fonts = {
     fontSize: 16,
   },
   body: {
-    fontSize: 12,
+    fontSize: 14,
   },
 };
