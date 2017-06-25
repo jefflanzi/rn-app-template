@@ -6,6 +6,10 @@ import { PageContainer } from '../components';
 
 // Main
 class Register extends Component {
+  static navigationOptions = {
+    title: 'Register',
+  };
+
   render() {
     return (
       <PageContainer>

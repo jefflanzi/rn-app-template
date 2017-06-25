@@ -12,7 +12,8 @@ const propTypes = {
 // Main Class
 class Login extends Component {
   static navigationOptions = {
-    // header: null,
+    header: null,
+    // title: 'Login',
   };
 
   render() {
