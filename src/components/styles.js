@@ -15,8 +15,9 @@ export const colors = {
     text: '#FFFFFF',
   },
   content: {
-    background: '#DADBDA',
+    background: '#F2F2F4',
     text: '#212121',
+    textSecondary: '#757575',
   },
   container: {
     background: '#DADBDA',

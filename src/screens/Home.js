@@ -8,7 +8,7 @@ import { PageContainer } from '../components';
 class Home extends Component {
   static navigationOptions = {
     title: 'Home',
-    headerLeft: null,
+    // headerLeft: null,
   };
 
   render() {
