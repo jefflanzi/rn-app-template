@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // Components
-import { Button, PageContainer, Text, TextInput } from '../components';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { Button, PageContainer, TextInput } from '../components';
+
+// Constants
+const { width } = Dimensions.get('window');
+const bgImage = require('../components/assets/loginBackground.jpg');
+const logo = require('../components/assets/react-native-logo-white.png');
 
 // Prop Types
 const propTypes = {
@@ -19,32 +25,32 @@ class Login extends Component {
   state = {
     email: '',
     password: '',
-    confirmPassword: '',
   };
 
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <PageContainer>
-        <Text>Login</Text>
-        <TextInput
-          value={this.state.email}
-          onChangeText={email => this.setState({ email })}
-          placeholder="email"
-        />
-        <TextInput
-          value={this.state.email}
-          onChangeText={password => this.setState({ password })}
-          placeholder="password"
-        />
-        <TextInput
-          value={this.state.email}
-          onChangeText={confirmPassword => this.setState({ confirmPassword })}
-          placeholder="confirm password"
-        />
-        <Button title="Login" onPress={() => navigate('Home')} />
-        <Button title="Register" onPress={() => navigate('Register')} />
-      </PageContainer>
+      <Image style={styles.bgImage} source={bgImage} resizeMode="contain">
+        <PageContainer containerStyle={styles.container}>
+          <Image source={logo} style={styles.logo} resizeMode="contain" />
+          <View style={styles.formContainer}>
+            <TextInput
+              value={this.state.email}
+              onChangeText={email => this.setState({ email })}
+              placeholder="email"
+              containerStyle={styles.input}
+            />
+            <TextInput
+              value={this.state.email}
+              onChangeText={password => this.setState({ password })}
+              placeholder="password"
+              containerStyle={styles.input}
+            />
+          </View>
+          <Button title="Login" onPress={() => navigate('Home')} />
+          <Button title="Register" onPress={() => navigate('Register')} />
+        </PageContainer>
+      </Image>
     );
   }
 }
@@ -52,3 +58,25 @@ class Login extends Component {
 // Exports
 Login.propTypes = propTypes;
 export default Login;
+
+// Styles
+const styles = StyleSheet.create({
+  bgImage: {
+    flex: 1,
+    width,
+  },
+  container: {
+    backgroundColor: 'transparent',
+  },
+  logo: {
+    width: width * 0.9,
+    justifyContent: 'flex-start',
+  },
+  formContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  input: {
+    opacity: 0.7,
+  },
+});

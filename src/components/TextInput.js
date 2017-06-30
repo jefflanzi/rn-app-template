@@ -7,9 +7,11 @@ import { colors } from './styles';
 const propTypes = {
   ...TextInput.propTypes,
   textStyle: Text.propTypes.style,
+  containerStyle: View.propTypes.style,
 };
 const defaultProps = {
   textStyle: {},
+  containerStyle: {},
   placeholder: 'Enter text here',
 };
 
@@ -17,7 +19,7 @@ const defaultProps = {
 class CustomTextInput extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.containerStyle]}>
         <TextInput
           placeholder={this.props.placeholder}
           placeholderTextColor={colors.content.textSecondary}

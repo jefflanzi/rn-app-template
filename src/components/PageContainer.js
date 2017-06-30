@@ -8,15 +8,17 @@ import { colors } from './styles';
 // PropTypes
 const propTypes = {
   children: PropTypes.node,
+  containerStyle: View.propTypes.style,
 };
 const defaultProps = {
   children: null,
+  containerStyle: {},
 };
 // Main
 class PageContainer extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.containerStyle]}>
         {this.props.children}
       </View>
     );
@@ -26,9 +28,8 @@ class PageContainer extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    padding: 20,
     backgroundColor: colors.container.background,
   },
 });
