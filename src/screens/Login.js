@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { login, register } from '../actions/userActions';
 
 // Components
 import {
+  Alert,
   Dimensions,
   Image,
   LayoutAnimation,
@@ -19,6 +22,8 @@ const logo = require('../components/assets/react-native-logo-white.png');
 // Prop Types
 const propTypes = {
   navigation: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
 };
 
 // Main Class
@@ -39,6 +44,33 @@ class Login extends Component {
   componentWillUpdate() {
     LayoutAnimation.easeInEaseOut();
   }
+
+  login = () => {
+    const { email, password } = this.state;
+    const user = { email, password };
+    Alert.alert('logging in');
+    this.props.login(user);
+  };
+
+  register = () => {
+    const { email, password, confirmPassword } = this.state;
+    if (!(password === confirmPassword)) {
+      Alert.alert('passwords must match');
+      return false;
+    }
+    const user = { email, password };
+    Alert.alert('registering new user');
+    this.props.register(user);
+    return true;
+  };
+
+  handleSubmit = () => {
+    if (this.state.isRegistering) {
+      this.register();
+    } else {
+      this.login();
+    }
+  };
 
   render() {
     const { navigate } = this.props.navigation;
@@ -70,7 +102,7 @@ class Login extends Component {
           </View>
           <Button
             title={this.state.isRegistering ? 'Sign Up' : 'Login'}
-            onPress={() => navigate('Home')}
+            onPress={this.handleSubmit}
           />
           <Button
             title={this.state.isRegistering ? 'Login' : 'Register'}
@@ -91,7 +123,8 @@ class Login extends Component {
 
 // Exports
 Login.propTypes = propTypes;
-export default Login;
+export default connect(null, { login, register })(Login);
+// export default Login;
 
 // Styles
 const styles = StyleSheet.create({
