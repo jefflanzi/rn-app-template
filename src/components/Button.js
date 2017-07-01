@@ -10,17 +10,19 @@ const propTypes = {
   disabled: PropTypes.bool,
   buttonStyle: View.propTypes.style,
   textStyles: Text.propTypes.style,
+  variant: PropTypes.oneOf(['base', 'outline', 'text']),
 };
 
 const defaultProps = {
   disabled: false,
   buttonStyle: null,
   textStyles: null,
+  variant: 'base',
 };
 
 // Component definition
 export default function Button(props) {
-  const { title, onPress, buttonStyle, textStyles, disabled } = props;
+  const { title, onPress, buttonStyle, textStyles, disabled, variant } = props;
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -28,9 +30,14 @@ export default function Button(props) {
       style={styles.container}
     >
       <View
-        style={[styles.button, buttonStyle, disabled && styles.buttonDisabled]}
+        style={[
+          styles.button,
+          styles[variant],
+          buttonStyle,
+          disabled && styles.buttonDisabled,
+        ]}
       >
-        <Text style={[styles.text, textStyles]}>
+        <Text style={[styles.buttonText, textStyles]}>
           {title}
         </Text>
       </View>
@@ -47,19 +54,34 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     marginVertical: 5,
   },
-  text: {
+  buttonText: {
     textAlign: 'center',
     color: colors.primary.text,
     backgroundColor: 'transparent',
   },
   button: {
-    backgroundColor: colors.primary.base,
-    opacity: 1.0,
     height: 44,
     borderRadius: 44 / 2,
     justifyContent: 'center',
   },
   buttonDisabled: {
     opacity: 0.2,
+  },
+  // Variants
+  base: {
+    backgroundColor: colors.primary.base,
+    opacity: 1.0,
+  },
+  outline: {
+    backgroundColor: 'transparent',
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    borderWidth: 3,
+  },
+  text: {
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+    borderRadius: 0,
+    alignSelf: 'center',
+    paddingHorizontal: 15,
   },
 });

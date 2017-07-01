@@ -48,7 +48,16 @@ class Login extends Component {
             />
           </View>
           <Button title="Login" onPress={() => navigate('Home')} />
-          <Button title="Register" onPress={() => navigate('Register')} />
+          <Button
+            title="Register"
+            onPress={() => navigate('Register')}
+            variant="outline"
+          />
+          <Button
+            title="Forgot Password?"
+            onPress={() => navigate('Register')}
+            variant="text"
+          />
         </PageContainer>
       </Image>
     );
