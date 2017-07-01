@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // Components
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  LayoutAnimation,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { Button, PageContainer, TextInput } from '../components';
 
 // Constants
@@ -25,7 +31,14 @@ class Login extends Component {
   state = {
     email: '',
     password: '',
+    confirmPassword: '',
+    isRegistering: false,
+    forgotPassword: false,
   };
+
+  componentWillUpdate() {
+    LayoutAnimation.easeInEaseOut();
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -41,16 +54,28 @@ class Login extends Component {
               containerStyle={styles.input}
             />
             <TextInput
-              value={this.state.email}
+              value={this.state.password}
               onChangeText={password => this.setState({ password })}
               placeholder="password"
               containerStyle={styles.input}
             />
+            {this.state.isRegistering &&
+              <TextInput
+                value={this.state.confirmPassword}
+                onChangeText={confirmPassword =>
+                  this.setState({ confirmPassword })}
+                placeholder="confirm password"
+                containerStyle={styles.input}
+              />}
           </View>
-          <Button title="Login" onPress={() => navigate('Home')} />
           <Button
-            title="Register"
-            onPress={() => navigate('Register')}
+            title={this.state.isRegistering ? 'Sign Up' : 'Login'}
+            onPress={() => navigate('Home')}
+          />
+          <Button
+            title={this.state.isRegistering ? 'Login' : 'Register'}
+            onPress={() =>
+              this.setState({ isRegistering: !this.state.isRegistering })}
             variant="outline"
           />
           <Button
