@@ -64,12 +64,25 @@ class Login extends Component {
     return true;
   };
 
+  forgotPassword = () => {
+    Alert.alert('send forgot password email');
+  };
+
   handleSubmit = () => {
     if (this.state.isRegistering) {
       this.register();
+    } else if (this.state.forgotPassword) {
+      this.forgotPassword();
     } else {
       this.login();
     }
+  };
+
+  getSubmitButtonText = () => {
+    const { isRegistering, forgotPassword } = this.state;
+    if (isRegistering) return 'Sign Up';
+    if (forgotPassword) return 'Recover Password';
+    return 'Login';
   };
 
   render() {
@@ -85,12 +98,14 @@ class Login extends Component {
               placeholder="email"
               containerStyle={styles.input}
             />
-            <TextInput
-              value={this.state.password}
-              onChangeText={password => this.setState({ password })}
-              placeholder="password"
-              containerStyle={styles.input}
-            />
+            {// Password Field
+            !this.state.forgotPassword &&
+              <TextInput
+                value={this.state.password}
+                onChangeText={password => this.setState({ password })}
+                placeholder="password"
+                containerStyle={styles.input}
+              />}
             {this.state.isRegistering &&
               <TextInput
                 value={this.state.confirmPassword}
@@ -101,18 +116,26 @@ class Login extends Component {
               />}
           </View>
           <Button
-            title={this.state.isRegistering ? 'Sign Up' : 'Login'}
+            title={this.getSubmitButtonText()}
             onPress={this.handleSubmit}
           />
+          {!this.state.forgotPassword &&
+            <Button
+              title={this.state.isRegistering ? 'Login' : 'Register'}
+              onPress={() =>
+                this.setState({
+                  isRegistering: !this.state.isRegistering,
+                  forgotPassword: false,
+                })}
+              variant="outline"
+            />}
           <Button
-            title={this.state.isRegistering ? 'Login' : 'Register'}
+            title={this.state.forgotPassword ? 'Login' : 'Forgot Password?'}
             onPress={() =>
-              this.setState({ isRegistering: !this.state.isRegistering })}
-            variant="outline"
-          />
-          <Button
-            title="Forgot Password?"
-            onPress={() => navigate('Register')}
+              this.setState({
+                forgotPassword: !this.state.forgotPassword,
+                isRegistering: false,
+              })}
             variant="text"
           />
         </PageContainer>
