@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
+import Auth from './Auth';
 import Router from './Router';
 import { StatusBar } from './components';
 import createStore from './store';
@@ -14,6 +15,7 @@ export default class appTemplate extends Component {
     return (
       <Provider store={createStore()}>
         <View style={{ flex: 1 }}>
+          <Auth />
           <StatusBar />
           <Router />
         </View>

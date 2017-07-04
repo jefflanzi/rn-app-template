@@ -55,7 +55,6 @@ class Login extends Component {
   login = () => {
     const { email, password } = this.state;
     const user = { email, password };
-    Alert.alert('logging in');
     this.props.login(user);
   };
 

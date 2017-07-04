@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: Platform.OS === 'ios' ? 20 : 0,
-    backgroundColor: colors.primary.dark,
+    // backgroundColor: colors.primary.dark,
   },
 });

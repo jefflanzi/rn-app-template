@@ -1,3 +1,4 @@
+import { createUser } from './authActions';
 import { LOGIN, LOGOUT, REGISTER } from '../reducers/userReducer';
 
 export function login(user) {
@@ -14,8 +15,8 @@ export function logout() {
 }
 
 export function register(user) {
-  return {
-    type: REGISTER,
-    payload: user,
+  return (dispatch) => {
+    dispatch(createUser(user));
+    dispatch({ type: LOGIN, payload: user });
   };
 }
