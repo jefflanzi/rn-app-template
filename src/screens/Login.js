@@ -45,6 +45,13 @@ class Login extends Component {
     LayoutAnimation.easeInEaseOut();
   }
 
+  getSubmitButtonText = () => {
+    const { isRegistering, forgotPassword } = this.state;
+    if (isRegistering) return 'Sign Up';
+    if (forgotPassword) return 'Recover Password';
+    return 'Login';
+  };
+
   login = () => {
     const { email, password } = this.state;
     const user = { email, password };
@@ -75,18 +82,11 @@ class Login extends Component {
       this.forgotPassword();
     } else {
       this.login();
+      this.props.navigation.navigate('Home');
     }
   };
 
-  getSubmitButtonText = () => {
-    const { isRegistering, forgotPassword } = this.state;
-    if (isRegistering) return 'Sign Up';
-    if (forgotPassword) return 'Recover Password';
-    return 'Login';
-  };
-
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <Image style={styles.bgImage} source={bgImage} resizeMode="contain">
         <PageContainer containerStyle={styles.container}>

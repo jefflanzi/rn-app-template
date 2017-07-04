@@ -5,7 +5,6 @@ import { colors } from './components/styles';
 const Main = StackNavigator(
   {
     Login: { screen: screens.Login },
-    Register: { screen: screens.Register },
     Home: { screen: screens.Home },
   },
   {
