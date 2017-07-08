@@ -5,7 +5,16 @@ import { login, register } from '../actions/userActions';
 import * as validate from '../util/validate';
 
 // Components
-import { Alert, Dimensions, Image, LayoutAnimation, StyleSheet, View } from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Keyboard,
+  LayoutAnimation,
+  StyleSheet,
+  View,
+} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Button, PageContainer, TextInput } from '../components';
 
 // Constants
@@ -33,11 +42,30 @@ class Login extends Component {
     confirmPassword: '',
     isRegistering: false,
     forgotPassword: false,
+    keyboard: false,
   };
+
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
 
   componentWillUpdate() {
     LayoutAnimation.easeInEaseOut();
   }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  keyboardDidShow = () => {
+    this.setState({ keyboard: true });
+  };
+
+  keyboardDidHide = () => {
+    this.setState({ keyboard: false });
+  };
 
   getSubmitButtonText = () => {
     const { isRegistering, forgotPassword } = this.state;
@@ -82,61 +110,63 @@ class Login extends Component {
   render() {
     return (
       <Image style={styles.bgImage} source={bgImage} resizeMode="contain">
-        <PageContainer containerStyle={styles.container}>
-          <Image source={logo} style={styles.logo} resizeMode="contain" />
-          <View style={styles.formContainer}>
-            <TextInput
-              value={this.state.email}
-              onChangeText={email => this.setState({ email })}
-              placeholder="email"
-              containerStyle={styles.input}
-              keyboardType="email-address"
-              returnKeyType="next"
-              validation={validate.email}
-            />
-            {// Password Field
-            !this.state.forgotPassword &&
+        <KeyboardAwareScrollView scrollEnabled={this.state.keyboard} keyboardOpeningTime={0}>
+          <PageContainer containerStyle={styles.container}>
+            <Image source={logo} style={styles.logo} resizeMode="contain" />
+            <View style={styles.formContainer}>
               <TextInput
-                value={this.state.password}
-                onChangeText={password => this.setState({ password })}
-                placeholder="password"
+                value={this.state.email}
+                onChangeText={email => this.setState({ email })}
+                placeholder="email"
                 containerStyle={styles.input}
-                secureTextEntry
-                returnKeyType={this.state.isRegistering ? 'next' : 'done'}
-                validation={validate.password}
+                keyboardType="email-address"
+                returnKeyType="next"
+                validation={validate.email}
+              />
+              {// Password Field
+              !this.state.forgotPassword &&
+                <TextInput
+                  value={this.state.password}
+                  onChangeText={password => this.setState({ password })}
+                  placeholder="password"
+                  containerStyle={styles.input}
+                  secureTextEntry
+                  returnKeyType={this.state.isRegistering ? 'next' : 'done'}
+                  validation={validate.password}
+                />}
+              {this.state.isRegistering &&
+                <TextInput
+                  value={this.state.confirmPassword}
+                  onChangeText={confirmPassword => this.setState({ confirmPassword })}
+                  placeholder="confirm password"
+                  containerStyle={styles.input}
+                  secureTextEntry
+                  returnKeyType="done"
+                  validation={value => validate.password(value) && value === this.state.password}
+                />}
+            </View>
+            <Button title={this.getSubmitButtonText()} onPress={this.handleSubmit} />
+            {!this.state.forgotPassword &&
+              <Button
+                title={this.state.isRegistering ? 'Login' : 'Register'}
+                onPress={() =>
+                  this.setState({
+                    isRegistering: !this.state.isRegistering,
+                    forgotPassword: false,
+                  })}
+                variant="outline"
               />}
-            {this.state.isRegistering &&
-              <TextInput
-                value={this.state.confirmPassword}
-                onChangeText={confirmPassword => this.setState({ confirmPassword })}
-                placeholder="confirm password"
-                containerStyle={styles.input}
-                secureTextEntry
-                returnKeyType="done"
-                validation={value => validate.password(value) && value === this.state.password}
-              />}
-          </View>
-          <Button title={this.getSubmitButtonText()} onPress={this.handleSubmit} />
-          {!this.state.forgotPassword &&
             <Button
-              title={this.state.isRegistering ? 'Login' : 'Register'}
+              title={this.state.forgotPassword ? 'Login' : 'Forgot Password?'}
               onPress={() =>
                 this.setState({
-                  isRegistering: !this.state.isRegistering,
-                  forgotPassword: false,
+                  forgotPassword: !this.state.forgotPassword,
+                  isRegistering: false,
                 })}
-              variant="outline"
-            />}
-          <Button
-            title={this.state.forgotPassword ? 'Login' : 'Forgot Password?'}
-            onPress={() =>
-              this.setState({
-                forgotPassword: !this.state.forgotPassword,
-                isRegistering: false,
-              })}
-            variant="text"
-          />
-        </PageContainer>
+              variant="text"
+            />
+          </PageContainer>
+        </KeyboardAwareScrollView>
       </Image>
     );
   }
