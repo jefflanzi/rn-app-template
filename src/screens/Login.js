@@ -2,16 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { login, register } from '../actions/userActions';
+import * as validate from '../util/validate';
 
 // Components
-import {
-  Alert,
-  Dimensions,
-  Image,
-  LayoutAnimation,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Alert, Dimensions, Image, LayoutAnimation, StyleSheet, View } from 'react-native';
 import { Button, PageContainer, TextInput } from '../components';
 
 // Constants
@@ -96,6 +90,9 @@ class Login extends Component {
               onChangeText={email => this.setState({ email })}
               placeholder="email"
               containerStyle={styles.input}
+              keyboardType="email-address"
+              returnKeyType="next"
+              validation={validate.email}
             />
             {// Password Field
             !this.state.forgotPassword &&
@@ -104,20 +101,22 @@ class Login extends Component {
                 onChangeText={password => this.setState({ password })}
                 placeholder="password"
                 containerStyle={styles.input}
+                secureTextEntry
+                returnKeyType={this.state.isRegistering ? 'next' : 'done'}
+                validation={validate.password}
               />}
             {this.state.isRegistering &&
               <TextInput
                 value={this.state.confirmPassword}
-                onChangeText={confirmPassword =>
-                  this.setState({ confirmPassword })}
+                onChangeText={confirmPassword => this.setState({ confirmPassword })}
                 placeholder="confirm password"
                 containerStyle={styles.input}
+                secureTextEntry
+                returnKeyType="done"
+                validation={value => validate.password(value) && value === this.state.password}
               />}
           </View>
-          <Button
-            title={this.getSubmitButtonText()}
-            onPress={this.handleSubmit}
-          />
+          <Button title={this.getSubmitButtonText()} onPress={this.handleSubmit} />
           {!this.state.forgotPassword &&
             <Button
               title={this.state.isRegistering ? 'Login' : 'Register'}
