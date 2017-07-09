@@ -31,6 +31,7 @@ class CustomTextInput extends Component {
           onChange={this.props.onChange}
           style={[styles.input, this.props.textStyle]}
           onChangeText={this.props.onChangeText}
+          ref={ref => (this.textInput = ref)}
           {...this.props}
         />
         {this.props.validation &&

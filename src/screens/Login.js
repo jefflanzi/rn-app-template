@@ -27,6 +27,11 @@ class Login extends Component {
     title: 'Login',
   };
 
+  constructor() {
+    super();
+    this.inputRefs = {};
+  }
+
   state = {
     email: '',
     password: '',
@@ -45,6 +50,11 @@ class Login extends Component {
     if (isRegistering) return 'Sign Up';
     if (forgotPassword) return 'Recover Password';
     return 'Login';
+  };
+
+  focusInput = (input) => {
+    const target = this.inputRefs[input];
+    if (target) target.textInput.focus();
   };
 
   login = () => {
@@ -87,18 +97,22 @@ class Login extends Component {
           <PageContainer containerStyle={styles.container}>
             <Image source={logo} style={styles.logo} resizeMode="contain" />
             <View style={styles.formContainer}>
+              {/* email */}
               <TextInput
+                ref={ref => (this.inputRefs.email = ref)}
                 value={this.state.email}
                 onChangeText={email => this.setState({ email })}
                 placeholder="email"
                 containerStyle={styles.input}
                 keyboardType="email-address"
-                returnKeyType="next"
+                returnKeyType={this.state.forgotPassword ? 'done' : 'next'}
                 validation={validate.email}
+                onSubmitEditing={() => this.focusInput('password')}
               />
-              {// Password Field
-              !this.state.forgotPassword &&
+              {/* password */}
+              {!this.state.forgotPassword &&
                 <TextInput
+                  ref={ref => (this.inputRefs.password = ref)}
                   value={this.state.password}
                   onChangeText={password => this.setState({ password })}
                   placeholder="password"
@@ -106,9 +120,12 @@ class Login extends Component {
                   secureTextEntry
                   returnKeyType={this.state.isRegistering ? 'next' : 'done'}
                   validation={validate.password}
+                  onSubmitEditing={() => this.focusInput('confirmPassword')}
                 />}
+              {/* confirmPassword */}
               {this.state.isRegistering &&
                 <TextInput
+                  ref={ref => (this.inputRefs.confirmPassword = ref)}
                   value={this.state.confirmPassword}
                   onChangeText={confirmPassword => this.setState({ confirmPassword })}
                   placeholder="confirm password"
