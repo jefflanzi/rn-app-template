@@ -18,6 +18,8 @@ const propTypes = {
   navigation: PropTypes.object.isRequired,
   login: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
+  showSpinner: PropTypes.func.isRequired,
+  hideSpinner: PropTypes.func.isRequired,
 };
 
 // Main Class
@@ -39,6 +41,11 @@ class Login extends Component {
     isRegistering: false,
     forgotPassword: false,
     keyboard: false,
+    error: {
+      email: false,
+      password: false,
+      confirmPassword: false,
+    },
   };
 
   componentWillUpdate() {
@@ -57,8 +64,21 @@ class Login extends Component {
     if (target) target.textInput.focus();
   };
 
-  login = () => {
+  validateInputs = () => {
+    const fields = Object.keys(this.inputRefs).filter(key => !!this.inputRefs[key]).map((key) => {
+      const { validation, value } = this.inputRefs[key].props;
+      return validation(value);
+    });
+    return !fields.map(field => !!field).includes(false);
+  };
+
+  handleLogin = () => {
     const { email, password } = this.state;
+    const validation = this.validateInputs();
+    if (!validation) {
+      Alert.alert('Invalid email or password');
+      return false;
+    }
     const user = { email, password };
     this.props.showSpinner();
     this.props.login(user);
@@ -66,12 +86,18 @@ class Login extends Component {
       this.props.hideSpinner();
       this.props.navigation.navigate('Home');
     }, 500);
+    return true;
   };
 
-  register = () => {
+  handleRegister = () => {
     const { email, password, confirmPassword } = this.state;
     if (!(password === confirmPassword)) {
       Alert.alert('passwords must match');
+      return false;
+    }
+    const validation = this.validateInputs();
+    if (!validation) {
+      Alert.alert('Invalid email or password');
       return false;
     }
     const user = { email, password };
@@ -81,16 +107,22 @@ class Login extends Component {
   };
 
   forgotPassword = () => {
-    Alert.alert('send forgot password email');
+    const validation = this.validateInputs();
+    if (!validation) {
+      Alert.alert('Invalid email');
+      return false;
+    }
+    Alert.alert('Recovery email sent');
+    return true;
   };
 
   handleSubmit = () => {
     if (this.state.isRegistering) {
-      this.register();
+      this.handleRegister();
     } else if (this.state.forgotPassword) {
       this.forgotPassword();
     } else {
-      this.login();
+      this.handleLogin();
     }
   };
 
