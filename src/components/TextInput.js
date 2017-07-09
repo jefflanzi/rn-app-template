@@ -11,12 +11,14 @@ const propTypes = {
   textStyle: Text.propTypes.style,
   containerStyle: View.propTypes.style,
   validation: PropTypes.func,
+  secureTextEntry: PropTypes.bool,
 };
 const defaultProps = {
   textStyle: {},
   containerStyle: {},
   placeholder: 'Enter text here',
   validation: null,
+  secureTextEntry: false,
 };
 
 // Class
@@ -35,36 +37,39 @@ class CustomTextInput extends Component {
           {...this.props}
         />
         {this.props.validation &&
-          <View style={styles.iconContainer}>
-            <ValidationIcon isValid={this.props.validation(this.props.value)} isError={false} />
-          </View>}
+          <ValidationIcon
+            isValid={this.props.validation(this.props.value)}
+            isError={false}
+            secureTextEntry={this.props.secureTextEntry}
+          />}
       </View>
     );
   }
 }
 
 // Helper Components
-const ValidationIcon = ({ isValid = false, isError = false }) => {
+const ValidationIcon = ({ isValid = false, isError = false, secureTextEntry = false }) => {
   let config;
-  if (isValid) config = { name: 'check', color: 'green' };
   if (isError) config = { name: 'clear', color: 'red' };
+  else if (isValid) config = { name: 'check', color: 'green' };
+  else if (secureTextEntry) config = { name: 'lock-outline', color: colors.primary.light };
+  else config = { name: 'edit', color: colors.primary.light };
 
-  if (isValid || isError) {
-    return (
-      <View style={[styles.iconContainer, { borderColor: config.color }]}>
-        <Icon size={20} name={config.name} color={config.color} />
-      </View>
-    );
-  }
-  return null;
+  return (
+    <View style={[styles.iconContainer, { borderColor: config.color }]}>
+      <Icon size={20} name={config.name} color={config.color} />
+    </View>
+  );
 };
 ValidationIcon.propTypes = {
   isValid: PropTypes.bool,
   isError: PropTypes.bool,
+  secureTextEntry: PropTypes.bool,
 };
 ValidationIcon.defaultProps = {
   isValid: false,
   isError: false,
+  secureTextEntry: false,
 };
 
 // Export
