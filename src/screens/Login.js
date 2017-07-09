@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login, register } from '../actions/userActions';
+import { login, register, showSpinner, hideSpinner } from '../actions';
 import * as validate from '../util/validate';
 
 // Components
@@ -60,7 +60,12 @@ class Login extends Component {
   login = () => {
     const { email, password } = this.state;
     const user = { email, password };
+    this.props.showSpinner();
     this.props.login(user);
+    setTimeout(() => {
+      this.props.hideSpinner();
+      this.props.navigation.navigate('Home');
+    }, 500);
   };
 
   register = () => {
@@ -86,7 +91,6 @@ class Login extends Component {
       this.forgotPassword();
     } else {
       this.login();
-      this.props.navigation.navigate('Home');
     }
   };
 
@@ -164,7 +168,7 @@ class Login extends Component {
 
 // Exports
 Login.propTypes = propTypes;
-export default connect(null, { login, register })(Login);
+export default connect(null, { login, register, showSpinner, hideSpinner })(Login);
 // export default Login;
 
 // Styles
