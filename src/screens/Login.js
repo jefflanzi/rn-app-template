@@ -5,17 +5,8 @@ import { login, register } from '../actions/userActions';
 import * as validate from '../util/validate';
 
 // Components
-import {
-  Alert,
-  Dimensions,
-  Image,
-  Keyboard,
-  LayoutAnimation,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Button, PageContainer, TextInput } from '../components';
+import { Alert, Dimensions, Image, LayoutAnimation, StyleSheet, View } from 'react-native';
+import { Button, KeyboardHandler, PageContainer, TextInput } from '../components';
 
 // Constants
 const { width } = Dimensions.get('window');
@@ -33,7 +24,7 @@ const propTypes = {
 class Login extends Component {
   static navigationOptions = {
     header: null,
-    // title: 'Login',
+    title: 'Login',
   };
 
   state = {
@@ -45,27 +36,9 @@ class Login extends Component {
     keyboard: false,
   };
 
-  componentWillMount() {
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
-  }
-
   componentWillUpdate() {
     LayoutAnimation.easeInEaseOut();
   }
-
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
-  keyboardDidShow = () => {
-    this.setState({ keyboard: true });
-  };
-
-  keyboardDidHide = () => {
-    this.setState({ keyboard: false });
-  };
 
   getSubmitButtonText = () => {
     const { isRegistering, forgotPassword } = this.state;
@@ -110,7 +83,7 @@ class Login extends Component {
   render() {
     return (
       <Image style={styles.bgImage} source={bgImage} resizeMode="contain">
-        <KeyboardAwareScrollView scrollEnabled={this.state.keyboard} keyboardOpeningTime={0}>
+        <KeyboardHandler>
           <PageContainer containerStyle={styles.container}>
             <Image source={logo} style={styles.logo} resizeMode="contain" />
             <View style={styles.formContainer}>
@@ -166,7 +139,7 @@ class Login extends Component {
               variant="text"
             />
           </PageContainer>
-        </KeyboardAwareScrollView>
+        </KeyboardHandler>
       </Image>
     );
   }
