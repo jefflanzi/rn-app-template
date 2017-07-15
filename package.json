@@ -9,7 +9,7 @@
   "dependencies": {
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.45.1",
+    "react-native": "^0.46.3",
     "react-native-keyboard-aware-scroll-view": "^0.2.9",
     "react-native-material-textfield": "^0.6.1",
     "react-native-vector-icons": "^4.2.0",
